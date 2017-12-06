@@ -15,3 +15,7 @@
 ### Product
 - brandName: String
 - name: String
+
+### IMPORTANT
+- ```require('./init')``` in any model
+- pass along argument you're trying to display in json

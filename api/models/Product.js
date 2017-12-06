@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
+const mongoose = require('./init')
 
 const Product = mongoose.model("Product", {
     brandName: String,
     name: String
 })
 
-export default Product
+module.exports = Product

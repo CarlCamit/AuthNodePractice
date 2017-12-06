@@ -7,6 +7,11 @@ const server = express()
 // JSON parser middleware
 server.use(bodyParser.json())
 
+// Routes
+server.use('/', [
+    require('./routes/products')
+])
+
 // Console log to ensure server is started or display errors
 server.listen(7000, error => {
     if (error) {

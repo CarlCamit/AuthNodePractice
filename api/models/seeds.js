@@ -20,5 +20,8 @@ Product.create([
     {
         brandName: "Nintendo",
         name: "Nintendo Switch"
-    },
+    }
 ])
+.then((products) => {
+    console.log(products)
+})
