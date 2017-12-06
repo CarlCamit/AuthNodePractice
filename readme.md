@@ -9,3 +9,9 @@
 - create a models directory in the api folder
 - create basic init.js template
 - add .gitignore file in root directory
+
+## Models
+
+### Product
+- brandName: String
+- name: String

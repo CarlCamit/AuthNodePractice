@@ -13,6 +13,9 @@
     "nodemon": "^1.12.5"
   },
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "seeds": "node models/seeds.js",
+    "drop": "node models/drop.js",
+    "reset": "npm run drop && npm run seed"
   }
 }
