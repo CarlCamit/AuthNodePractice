@@ -11,3 +11,13 @@ Content-Type: application/json
     "lastName": "Camit",
     "password": "password123"
 }
+
+###
+
+POST http://localhost:7000/auth/signin
+Content-Type: application/json
+
+{
+    "email": "carlcamit0@gmail.com",
+    "password": "password123"
+}

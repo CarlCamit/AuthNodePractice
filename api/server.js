@@ -1,11 +1,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
+const authMiddleware = require('./middleware/auth')
+
 // Initialize express instance
 const server = express()
 
 // JSON parser middleware
 server.use(bodyParser.json())
+server.use(authMiddleware.initialize)
 
 // Routes
 server.use('/', [

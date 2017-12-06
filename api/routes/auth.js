@@ -13,4 +13,11 @@ router.post('/auth/register',
     }
 )
 
+router.post('/auth/signin',
+    // Middleware to handle the sign in
+    authMiddleware.signIn,
+    // JSON handler
+    authMiddleware.signJWTForUser
+)
+
 module.exports = router
