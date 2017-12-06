@@ -9,7 +9,8 @@ server.use(bodyParser.json())
 
 // Routes
 server.use('/', [
-    require('./routes/products')
+    require('./routes/products'),
+    require('./routes/auth'),
 ])
 
 // Console log to ensure server is started or display errors
