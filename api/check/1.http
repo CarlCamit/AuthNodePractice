@@ -1,4 +1,5 @@
 GET http://localhost:7000/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNhcmxjYW1pdDBAZ21haWwuY29tIiwiaWF0IjoxNTEyNTM0NjkyLCJleHAiOjE1MTMxMzk0OTIsInN1YiI6IjVhMjc1MGQ5NTE1NzFkOTg4Y2ViYTJhMiJ9.FVEdNPrxRS9CkP1N2W-USPnRWqfSSjvYmiX0_5yvo5w 
 
 ###
 

@@ -1,5 +1,6 @@
 const passport = require('passport')
 const jsonwebtoken = require('jsonwebtoken')
+const passportjwt = require('passport-jwt')
 
 const User = require('../models/User')
 
@@ -27,6 +28,29 @@ function register(req, res, next) {
     })
 }
 
+passport.use(new passportjwt.Strategy(
+    {
+        // Where will hte JWT be passed in the HTTP request
+        jwtFromRequest: passportjwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: jwtSecret,
+        algorithms: [jwtAlgorithm]
+    },
+    (payload, done) => {
+        User.findById(payload.sub)
+            .then((user) => {
+                if (user) {
+                    done(null, user)
+                }
+                else {
+                    done(null, false)
+                }
+            })
+            .catch((error) => {
+                done(error, false)
+            })
+    }
+))
+
 function signJWTForUser(req, res) {
     const user = req.user
     const token = jsonwebtoken.sign(
@@ -50,5 +74,6 @@ module.exports = {
     initialize: passport.initialize(),
     register,
     signIn: passport.authenticate('local', { session: false }),
+    requireJWT: passport.authenticate('jwt', { session: false }),
     signJWTForUser
 }
