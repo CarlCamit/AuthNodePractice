@@ -3,6 +3,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNhcmxjY
 
 ###
 
+PATCH http://localhost:7000/products/5a29c5cc2c4c21c5d7abb65d
+Content-Type: application/json
+
+{
+    "brandName": "Nintendo",
+    "name": "Nintendo Wii U"
+}
+
+###
+
 DELETE http://localhost:7000/products/5a28e26d20aefab98130b0ef
 
 ###

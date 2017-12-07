@@ -25,6 +25,22 @@ router.post('/products', (req, res) => {
     })
 })
 
+router.patch("/products/:id", (req, res) => {
+    const id = req.params.id
+    const attributes = req.body
+    Product.findByIdAndUpdate(id, attributes, { new: true })
+      .then(product => {
+        if (product) {
+          res.status(200).json({ message: "You updated the thing!", product })
+        } else {
+          res.status(404).json({ error: error })
+        }
+      })
+      .catch(error => {
+        res.status(400).json({ error: error })
+      })
+  })
+
 router.delete('/products/:id', (req, res) => {
     id = req.params["id"]
     Product.findByIdAndRemove(id).then((product) => {
