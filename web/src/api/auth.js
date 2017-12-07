@@ -1,9 +1,15 @@
-import api from './init'
-import decodeJWT from 'jwt-decode'
+import api, { setToken } from './init'
+import { getDecodedToken } from './token'
 
 export function signIn({ email, password }) {
     return api.post('/auth/signin', { email, password })
         .then((res) => {
-            return decodeJWT(res.data.token)
+            const token = res.data.token
+            setToken(token)
+            return getDecodedToken()
         })
+}
+
+export function signOutNow() {
+    setToken(null)
 }

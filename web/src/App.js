@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import SignInForm from './components/SignInForm'
-import { signIn } from './api/auth'
+import { signIn, signOutNow } from './api/auth'
 import { listProducts } from './api/products'
-// import { setToken } from './api/init'
+import { getDecodedToken } from './api/token'
 
 class App extends Component {
 
   state = {
-    decodedToken: null
+    decodedToken: getDecodedToken()
   }
 
   componentDidMount() {
@@ -19,6 +19,11 @@ class App extends Component {
       .catch((error) => {
         console.log({ error: error.message })
       })
+  }
+
+  onSignOut = () => {
+    signOutNow()
+    this.setState({ decodedToken: null })
   }
 
   onSignIn = ({
@@ -47,6 +52,13 @@ class App extends Component {
               <p>Email: { decodedToken.email }</p>
               <p>Signed In At: { new Date(decodedToken.iat * 1000).toISOString() }</p>
               <p>Expire At: { new Date(decodedToken.exp * 1000).toISOString() }</p>
+              <button
+                onClick={
+                  this.onSignOut
+                }
+              >
+                Sign Out
+              </button>
             </div>
           ) : 
           (
