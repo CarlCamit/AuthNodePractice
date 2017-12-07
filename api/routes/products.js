@@ -15,4 +15,30 @@ router.get('/products', authMiddleware.requireJWT, (req, res) => {
     })
 })
 
+router.post('/products', (req, res) => {
+    const attributes = req.body
+    Product.create(attributes).then((product) => {
+        res.status(201).json(product)
+    })
+    .catch((error) => {
+        res.status(400).json({ error: error.message })
+    })
+})
+
+router.delete('/products/:id', (req, res) => {
+    id = req.params["id"]
+    Product.findByIdAndRemove(id).then((product) => {
+        if (product) {
+            res.status(200).json({ message: `Product with an id: ${id} was removed from the database`})
+        }
+        else {
+            res.status(400).json({ error: `Product with the id: ${id} cannot be found`})
+        }
+    })
+    .catch((error) => {
+        res.status(404).json({ message: "Invalid ID"})
+    })
+})
+
+
 module.exports = router

@@ -1,6 +1,13 @@
-const Product = require('./Product')
+// const Product = require('./Product')
+const User = require('./User')
 
-Product.deleteMany()
+// Product.deleteMany()
+//     .then(() => {
+//         console.log("Dropped all products")
+//         process.exit()
+//     })
+
+User.deleteMany()
     .then(() => {
         console.log("Dropped all products")
         process.exit()

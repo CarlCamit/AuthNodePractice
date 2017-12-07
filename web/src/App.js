@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
 import './App.css';
-import SignInForm from './components/SignInForm'
-import { signIn, signOutNow } from './api/auth'
-import { listProducts } from './api/products'
+
+import { register, signIn, signOutNow } from './api/auth'
+import { listProducts, createProduct, deleteProduct } from './api/products'
 import { getDecodedToken } from './api/token'
+
+import SignInForm from './components/SignInForm'
+import RegisterForm from './components/RegisterForm'
+import ProductTable from './components/ProductTable'
+import CreateProductForm from './components/CreateProductForm'
 
 class App extends Component {
 
   state = {
-    decodedToken: getDecodedToken()
+    decodedToken: getDecodedToken(),
+    products: []
   }
 
   componentDidMount() {
     listProducts()
       .then((products) => {
-        console.log(products)
+        this.setState({ products })
       })
       .catch((error) => {
         console.log({ error: error.message })
@@ -29,18 +35,45 @@ class App extends Component {
   onSignIn = ({
     email, password
   }) => {
-    console.log('Form recieved', { email, password })
     signIn({ email, password })
       .then((decodedToken) => {
-        console.log('Signed In', decodedToken)
         this.setState({ decodedToken })
       })
   }
 
+  onRegister = ({
+    email, firstName, lastName, password
+  }) => {
+    register({ email, firstName, lastName, password })
+      .then((decodedToken) => {
+        this.setState({ decodedToken })
+      })
+  }
+
+  onCreateProduct = ({
+    name, brandName
+  }) => {
+    createProduct({ name, brandName })
+      .then((data) => {
+
+        this.setState({ products: this.state.products.concat(data) })
+      })
+  }
+
+  onDeleteProduct = ({
+    id, index
+  }) => {
+    console.log(id)
+    deleteProduct({id, index})
+      .then(() => {
+        this.setState({ products: this.state.products.splice(index, 1)})
+      })
+  }
+  
   render() {
 
     const { decodedToken } = this.state
-
+    
     return (
       <div className="App">
         <h1>Yarra</h1>
@@ -59,14 +92,34 @@ class App extends Component {
               >
                 Sign Out
               </button>
+              <ProductTable 
+                products={
+                  this.state.products
+                } 
+                onDeleteProduct={
+                  this.onDeleteProduct
+                }
+              />
+              <CreateProductForm 
+                onCreateProduct={
+                  this.onCreateProduct
+                }
+              />
             </div>
           ) : 
           (
-            <SignInForm
-              onSignIn={
-                this.onSignIn
-              }
-            />
+            <div>
+              <SignInForm
+                onSignIn={
+                  this.onSignIn
+                }
+              />
+              <RegisterForm
+                onRegister={
+                  this.onRegister
+                }
+              />
+            </div>
           )
         }
       </div>
