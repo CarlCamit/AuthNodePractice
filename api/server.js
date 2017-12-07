@@ -1,12 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-
+const cors = require('cors')
 const authMiddleware = require('./middleware/auth')
 
 // Initialize express instance
 const server = express()
 
 // JSON parser middleware
+server.use(cors())
 server.use(bodyParser.json())
 server.use(authMiddleware.initialize)
 

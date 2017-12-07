@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import SignInForm from './components/SignInForm'
+import { signIn } from './api/auth'
 
 class App extends Component {
 
@@ -8,6 +9,10 @@ class App extends Component {
     email, password
   }) => {
     console.log('Form recieved', { email, password })
+    signIn({ email, password })
+      .then((data) => {
+        console.log('Signed In', data)
+      })
   }
 
   render() {
