@@ -30,7 +30,7 @@ function register(req, res, next) {
 
 passport.use(new passportjwt.Strategy(
     {
-        // Where will hte JWT be passed in the HTTP request
+        // Where will the JWT be passed in the HTTP request
         jwtFromRequest: passportjwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: jwtSecret,
         algorithms: [jwtAlgorithm]

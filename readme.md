@@ -19,3 +19,4 @@
 ### IMPORTANT
 - ```require('./init')``` in any model
 - pass along argument you're trying to display in json
+- look up zeit / apex up
