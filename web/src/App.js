@@ -3,6 +3,7 @@ import './App.css';
 
 import { register, signIn, signOutNow } from './api/auth'
 import { listProducts, createProduct, deleteProduct } from './api/products'
+import { listProductsInWishlist, addProductToWishlist, removeProductFromWishlist } from './api/wishlist'
 import { getDecodedToken } from './api/token'
 
 import SignInForm from './components/SignInForm'
@@ -14,13 +15,21 @@ class App extends Component {
 
   state = {
     decodedToken: getDecodedToken(),
-    products: []
+    products: [],
+    wishlist: []
   }
 
   componentDidMount() {
     listProducts()
       .then((products) => {
         this.setState({ products })
+      })
+      .catch((error) => {
+        console.log({ error: error.message })
+      })
+    listProductsInWishlist()
+      .then((wishlist) => {
+        this.setState({ wishlist: wishlist.products })
       })
       .catch((error) => {
         console.log({ error: error.message })
@@ -55,7 +64,6 @@ class App extends Component {
   }) => {
     createProduct({ name, brandName })
       .then((data) => {
-
         this.setState({ products: this.state.products.concat(data) })
       })
   }
@@ -63,10 +71,28 @@ class App extends Component {
   onDeleteProduct = ({
     id, index
   }) => {
-    console.log(id)
-    deleteProduct({id, index})
+    deleteProduct({id})
       .then(() => {
-        this.setState({ products: this.state.products.splice(index, 1)})
+        this.setState({ products: this.state.products.filter(product => product._id !== id ) })
+      })
+  }
+
+  onAddProductToWishlist = ({
+    id
+  }) => {
+    addProductToWishlist({ id })
+      .then((data) => {
+        this.setState({ wishlist: data.products })
+      })
+  }
+
+  onRemoveProductFromWishlist = ({
+    id
+  }) => {
+    removeProductFromWishlist({ id })
+      .then(() => {
+        console.log(this.state.wishlist)
+        this.setState({ wishlist: this.state.wishlist.filter(product => product._id !== id ) })
       })
   }
   
@@ -92,17 +118,37 @@ class App extends Component {
               >
                 Sign Out
               </button>
-              <ProductTable 
+              <ProductTable
+                title={
+                  `Products`
+                }
                 products={
                   this.state.products
                 } 
                 onDeleteProduct={
                   this.onDeleteProduct
                 }
+                onAddProductToWishlist={
+                  this.onAddProductToWishlist
+                }
+                onRemoveProductFromWishlist={
+                  this.onRemoveProductFromWishlist
+                }
               />
               <CreateProductForm 
                 onCreateProduct={
                   this.onCreateProduct
+                }
+              />
+              <ProductTable
+                title={
+                  `Wishlist`
+                }
+                products={
+                  this.state.wishlist
+                } 
+                onRemoveProductFromWishlist={
+                  this.onRemoveProductFromWishlist
                 }
               />
             </div>

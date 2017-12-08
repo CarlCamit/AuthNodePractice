@@ -1,12 +1,16 @@
 import React from 'react'
 
 function ProductTable({
+    title,
     products,
-    onDeleteProduct
+    onEditProduct,
+    onDeleteProduct,
+    onAddProductToWishlist,
+    onRemoveProductFromWishlist
 }) {
     return (
         <div>
-            <h1>Products</h1>
+            <h1>{ title }</h1>
             <table>
                 <thead>
                 <tr>
@@ -23,10 +27,28 @@ function ProductTable({
                         <td>
                             <button
                                 onClick={ () => {
-                                    onDeleteProduct({ id: product._id, index: index })
+                                    onDeleteProduct({ id: product._id })
                                 }}
                             >
-                                {'DELETE'}
+                                {'Delete'}
+                            </button>
+                        </td>
+                        <td>
+                            <button
+                                onClick={ () => {
+                                    onAddProductToWishlist({ id: product._id })
+                                }}
+                            >
+                                {'Add To Wishlist'}
+                            </button>
+                        </td>
+                        <td>
+                            <button
+                                onClick={ () => {
+                                    onRemoveProductFromWishlist({ id: product._id })
+                                }}
+                            >
+                                {'Remove From Wishlist'}
                             </button>
                         </td>
                     </tr>
