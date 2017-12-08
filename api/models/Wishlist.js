@@ -6,7 +6,7 @@ const wishlistSchema = new Schema({
     // Has one user 
     user: { type: Schema.ObjectId, ref: 'User', unique: true },
     // Products that belong to this wishlist
-    products: [{ type: Schema.ObjectId, red: 'Product' }]
+    products: [{ type: Schema.ObjectId, ref: 'Product' }]
 })
 
 const Wishlist = mongoose.model("Wishlist", wishlistSchema)
