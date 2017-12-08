@@ -14,6 +14,14 @@ export function createProduct({ name, brandName }) {
         })
 }
 
+// Need id, for req.params, need object params
+export function editProduct({ id, name, brandName }) {
+    return api.patch(`/products/${id}`, { name, brandName })
+        .then((res) => {
+            return res.data
+        })
+}
+
 export function deleteProduct({id}) {
     return api.delete(`/products/` + id)
 }

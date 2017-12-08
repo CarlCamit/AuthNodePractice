@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import { register, signIn, signOutNow } from './api/auth'
-import { listProducts, createProduct, deleteProduct } from './api/products'
+import { listProducts, createProduct, editProduct, deleteProduct } from './api/products'
 import { listProductsInWishlist, addProductToWishlist, removeProductFromWishlist } from './api/wishlist'
 import { getDecodedToken } from './api/token'
 
@@ -16,7 +16,9 @@ class App extends Component {
   state = {
     decodedToken: getDecodedToken(),
     products: [],
-    wishlist: []
+    wishlist: [],
+    // State to hold product ID to edit
+    activeEditProductId: null
   }
 
   componentDidMount() {
@@ -68,8 +70,18 @@ class App extends Component {
       })
   }
 
+  onUpdateProduct = ({
+    id, name, brandName
+  }) => {
+    editProduct({ id, name, brandName })
+      .then((data) => {
+        // Need to only pass data because findByIdAndUpdate with the { new: true } option returns the updated array
+        this.setState({ products: data })
+      })
+  }
+
   onDeleteProduct = ({
-    id, index
+    id
   }) => {
     deleteProduct({id})
       .then(() => {
@@ -91,9 +103,13 @@ class App extends Component {
   }) => {
     removeProductFromWishlist({ id })
       .then(() => {
-        console.log(this.state.wishlist)
         this.setState({ wishlist: this.state.wishlist.filter(product => product._id !== id ) })
       })
+  }
+
+  getEditProductId = ({ id }) => {
+    // Sets the state for the product ID that needs to be edited
+    this.setState({ activeEditProductId: id })
   }
   
   render() {
@@ -124,7 +140,16 @@ class App extends Component {
                 }
                 products={
                   this.state.products
-                } 
+                }
+                getEditProductId={
+                  this.getEditProductId
+                }
+                onEditProductId={
+                  this.state.activeEditProductId
+                }
+                onUpdateProduct={
+                  this.onUpdateProduct
+                }
                 onDeleteProduct={
                   this.onDeleteProduct
                 }

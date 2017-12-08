@@ -15,7 +15,7 @@ server.use(authMiddleware.initialize)
 server.use('/', [
     require('./routes/products'),
     require('./routes/auth'),
-    require('./routes/wishlists')
+    require('./routes/wishlist')
 ])
 
 // Console log to ensure server is started or display errors
