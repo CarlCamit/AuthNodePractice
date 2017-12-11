@@ -1,12 +1,11 @@
-const Product = require('./Product')
+const Product = require("./Product")
 // const User = require('./User')
-const Wishlist = require('./Wishlist')
+const Wishlist = require("./Wishlist")
 
-Product.deleteMany()
-    .then(() => {
-        console.log("Dropped all products")
-        process.exit()
-    })
+Product.deleteMany().then(() => {
+  console.log("Dropped all products")
+  process.exit()
+})
 
 // User.deleteMany()
 //     .then(() => {
@@ -14,8 +13,7 @@ Product.deleteMany()
 //         process.exit()
 //     })
 
-Wishlist.deleteMany()
-    .then(() => {
-        console.log("Dropped all products")
-        process.exit()
-    })
+Wishlist.deleteMany().then(() => {
+  console.log("Dropped all products")
+  process.exit()
+})

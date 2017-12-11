@@ -16,12 +16,14 @@
     "passport-local-mongoose": "^4.4.0"
   },
   "devDependencies": {
-    "nodemon": "^1.12.5"
+    "nodemon": "^1.12.5",
+    "prettier": "1.9.1"
   },
   "scripts": {
     "dev": "nodemon server.js",
     "seeds": "node models/seeds.js",
     "drop": "node models/drop.js",
-    "reset": "npm run drop && npm run seed"
+    "reset": "npm run drop && npm run seed",
+    "prettier": "prettier --no-semi --jsx-bracket-same-line --write \"./**/*.js\""
   }
 }
