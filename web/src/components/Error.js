@@ -7,14 +7,14 @@ function improveMessage(message) {
     else if (/ 401/.test(message)) {
         return 'You must be signed in'
     }
-    
+    return message
 }
 
 function Error({
     error
 }) {
     return (
-        <p>{ error.message }</p>
+        <p>{ improveMessage(error.message) }</p>
     )
 }
 

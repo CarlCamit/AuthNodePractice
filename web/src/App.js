@@ -66,12 +66,16 @@ class App extends Component {
   onRegister = ({ email, firstName, lastName, password }) => {
     register({ email, firstName, lastName, password }).then(decodedToken => {
       this.setState({ decodedToken })
+    }).catch((error) => {
+      this.setState({ error })
     })
   }
 
   onCreateProduct = ({ name, brandName }) => {
     createProduct({ name, brandName }).then(data => {
       this.setState({ products: this.state.products.concat(data) })
+    }).catch((error) => {
+      this.setState({ error })
     })
   }
 
@@ -79,7 +83,8 @@ class App extends Component {
     editProduct({ id, name, brandName }).then(data => {
       // Need to only pass data because findByIdAndUpdate with the { new: true } option returns the updated array
       this.setState({ products: data })
-      console.log(this.state.activeEditProductId)
+    }).catch((error) => {
+      this.setState({ error })
     })
   }
 
@@ -88,12 +93,16 @@ class App extends Component {
       this.setState({
         products: this.state.products.filter(product => product._id !== id)
       })
+    }).catch((error) => {
+      this.setState({ error })
     })
   }
 
   onAddProductToWishlist = ({ id }) => {
     addProductToWishlist({ id }).then(data => {
       this.setState({ wishlist: data.products })
+    }).catch((error) => {
+      this.setState({ error })
     })
   }
 
@@ -102,6 +111,8 @@ class App extends Component {
       this.setState({
         wishlist: this.state.wishlist.filter(product => product._id !== id)
       })
+    }).catch((error) => {
+      this.setState({ error })
     })
   }
 
@@ -137,17 +148,25 @@ class App extends Component {
           )}/>
 
           <Route path='/signin' exact render={ () => (
+            decodedToken ? (
+              <Redirect to='/products' />
+            ) : (
             <Fragment>
               <h2>Sign In</h2>
               <SignInForm onSignIn={this.onSignIn} />
             </Fragment>
+            )
           )} />
 
           <Route path='/register' exact render={ () => (
+            decodedToken ? (
+              <Redirect to='/products' />
+            ) : (
             <Fragment>
               <h2>Sign Up</h2>
               <RegisterForm onRegister={this.onRegister} />
             </Fragment>
+            ) 
           )} />
 
           <Route path='/account' exact render={ requireAuthentication(() => (

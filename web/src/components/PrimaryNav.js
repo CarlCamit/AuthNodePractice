@@ -13,6 +13,7 @@ function PrimaryNav({
                     decodedToken ? (
                         <Fragment>
                             <li><Link to='/wishlist'>Wishlist</Link></li>
+                            <li><Link to='/admin/products'>Admin Dashboard</Link></li>
                             <li><Link to='/account'>Account</Link></li>
                         </Fragment>
                     ) : (
