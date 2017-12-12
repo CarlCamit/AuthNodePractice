@@ -18,6 +18,14 @@ server.use("/", [
   require("./routes/wishlist")
 ])
 
+server.use((error, req, res, next) => {
+  res.json({
+    error: {
+      message: error.message
+    }
+  })
+})
+
 // Console log to ensure server is started or display errors
 server.listen(7000, error => {
   if (error) {

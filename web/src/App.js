@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react"
 import "./App.css"
-import { BrowserRouter as Router, Route } from "react-router-dom"
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom"
 
 import { register, signIn, signOutNow } from "./api/auth"
 import {
@@ -21,12 +21,14 @@ import RegisterForm from "./components/RegisterForm"
 import ProductTable from "./components/ProductTable"
 import CreateProductForm from "./components/CreateProductForm"
 import PrimaryNav from "./components/PrimaryNav"
+import Error from "./components/Error"
 
 class App extends Component {
   state = {
     decodedToken: getDecodedToken(),
     products: [],
     wishlist: [],
+    error: null,
     // State to hold product ID to edit
     activeEditProductId: null
   }
@@ -37,14 +39,14 @@ class App extends Component {
         this.setState({ products })
       })
       .catch(error => {
-        console.log({ error: error.message })
+        this.setState({ error })
       })
     listProductsInWishlist()
       .then(wishlist => {
         this.setState({ wishlist: wishlist.products })
       })
       .catch(error => {
-        console.log({ error: error.message })
+        this.setState({ error })
       })
   }
 
@@ -56,6 +58,8 @@ class App extends Component {
   onSignIn = ({ email, password }) => {
     signIn({ email, password }).then(decodedToken => {
       this.setState({ decodedToken })
+    }).catch((error) => {
+      this.setState({ error })
     })
   }
 
@@ -107,13 +111,23 @@ class App extends Component {
   }
 
   render() {
-    const { decodedToken, products, wishlist } = this.state
+    const { error, decodedToken, products, wishlist } = this.state
+
+    const requireAuthentication = (render) => (props) => (
+      decodedToken ? (
+        render(props)
+      ) : (
+        <Redirect to='/signin' />
+      )
+    )
 
     return (
       <Router>
         <div className="App">
 
           <PrimaryNav decodedToken={decodedToken} />
+
+          { error && <Error error={error} /> }
 
           <Route path='/' exact render={ () => (
             <Fragment>
@@ -136,7 +150,7 @@ class App extends Component {
             </Fragment>
           )} />
 
-          <Route path='/account' exact render={ () => (
+          <Route path='/account' exact render={ requireAuthentication(() => (
             <Fragment>
               <div>
                 <p>Email: {decodedToken.email}</p>
@@ -145,14 +159,14 @@ class App extends Component {
                 <button onClick={this.onSignOut}>Sign Out</button>
               </div>
             </Fragment>
-          )} />
+          ))} />
 
           <Route path='/products' exact render={ () => (
             <Fragment>
               { products &&
                 <ProductTable
                   title={`Products`}
-                  products={products}
+                  products={this.state.products}
                   getEditProductId={this.getEditProductId}
                   onEditProductId={this.state.activeEditProductId}
                   onUpdateProduct={this.onUpdateProduct}
@@ -164,23 +178,23 @@ class App extends Component {
             </Fragment>
           )} />
 
-          <Route path='/admin/products' exact render={ () => (
+          <Route path='/admin/products' exact render={ requireAuthentication(() => (
             <Fragment>
               <CreateProductForm onCreateProduct={this.onCreateProduct} />
             </Fragment>
-          )} />
+          ))} />
 
-          <Route path="/wishlist" exact render={ () => (
+          <Route path="/wishlist" exact render={ requireAuthentication(() => (
             <Fragment>
               { 
-                decodedToken && wishlist && <ProductTable
+                wishlist && <ProductTable
                 title={`Wishlist`}
                 products={this.state.wishlist}
                 onRemoveProductFromWishlist={this.onRemoveProductFromWishlist}
                 />
               }
             </Fragment>
-          )} />
+          ))} />
                 
         </div>
       </Router>
