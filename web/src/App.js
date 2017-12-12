@@ -20,6 +20,7 @@ import SignInForm from "./components/SignInForm"
 import RegisterForm from "./components/RegisterForm"
 import ProductTable from "./components/ProductTable"
 import CreateProductForm from "./components/CreateProductForm"
+import PrimaryNav from "./components/PrimaryNav"
 
 class App extends Component {
   state = {
@@ -112,6 +113,8 @@ class App extends Component {
       <Router>
         <div className="App">
 
+          <PrimaryNav decodedToken={decodedToken} />
+
           <Route path='/' exact render={ () => (
             <Fragment>
               <h1>Yarra</h1>
@@ -126,7 +129,7 @@ class App extends Component {
             </Fragment>
           )} />
 
-          <Route path='/signup' exact render={ () => (
+          <Route path='/register' exact render={ () => (
             <Fragment>
               <h2>Sign Up</h2>
               <RegisterForm onRegister={this.onRegister} />
