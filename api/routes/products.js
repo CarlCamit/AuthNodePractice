@@ -1,12 +1,12 @@
 const express = require("express")
 
-const authMiddleware = require("../middleware/auth")
+const {requireJWT} = require("../middleware/auth")
 
 const Product = require("../models/Product")
 
 const router = express.Router()
 
-router.get("/products", authMiddleware.requireJWT, (req, res) => {
+router.get("/products", (req, res) => {
   Product.find()
     .then(products => {
       res.json(products)
@@ -16,7 +16,7 @@ router.get("/products", authMiddleware.requireJWT, (req, res) => {
     })
 })
 
-router.post("/products", (req, res) => {
+router.post("/products", requireJWT, (req, res) => {
   const attributes = req.body
   Product.create(attributes)
     .then(product => {
@@ -27,7 +27,7 @@ router.post("/products", (req, res) => {
     })
 })
 
-router.patch("/products/:id", (req, res) => {
+router.patch("/products/:id", requireJWT, (req, res) => {
   const id = req.params.id
   const attributes = req.body
   Product.findByIdAndUpdate(id, attributes, { new: true })
@@ -43,7 +43,7 @@ router.patch("/products/:id", (req, res) => {
     })
 })
 
-router.delete("/products/:id", (req, res) => {
+router.delete("/products/:id", requireJWT, (req, res) => {
   id = req.params["id"]
   Product.findByIdAndRemove(id)
     .then(product => {

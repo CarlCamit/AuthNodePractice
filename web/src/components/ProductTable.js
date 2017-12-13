@@ -3,6 +3,7 @@ import React, { Fragment } from "react"
 function ProductTable({
   title,
   products,
+  productsInWishList,
   getEditProductId,
   onEditProductId,
   onUpdateProduct,
@@ -35,84 +36,103 @@ function ProductTable({
             </tr>
           </thead>
           <tbody>
-            {products.map((product, index) => (
-              <tr key={"product" + index}>
-                {// If the prop passed to onEditProductId is not the same as the current products id then render normal data otherwise render input forms using default value to show what it currently is.
-                onEditProductId !== product._id && (
-                  <Fragment>
-                    <td>{product.brandName}</td>
-                    <td>{product.name}</td>
-                  </Fragment>
-                )}
-                {onEditProductId === product._id && (
-                  <Fragment>
-                    <td>
-                      <input
-                        type="text"
-                        name="brandName"
-                        defaultValue={product.brandName}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="name"
-                        defaultValue={product.name}
-                      />
-                    </td>
-                  </Fragment>
-                )}
-                {onUpdateProduct && (
-                  <td>
-                    {onEditProductId !== product._id && (
-                      <button
-                        onClick={event => {
-                          // Prevents default submit action on button click as a result of being wrapped in a form
-                          event.preventDefault()
-                          // Grab the current product id and set it as state in the App.js so we can pass it down as a prop.
-                          getEditProductId({ id: product._id })
-                        }}>
-                        {"Edit"}
-                      </button>
+            {
+              products.map((product, index) => {
+
+                // const foundProducts = productsInWishList.find((productsInWishList) => {
+                //   if (productsInWishList._id === product._id) {
+                //     return true
+                //   }
+                //   else {
+                //     return false
+                //   }
+                // })
+                // .find returns value
+                // .includes returns boolean
+                const inWishList = !!productsInWishList.find((productsInWishList) => {
+                  return (productsInWishList._id === product._id)
+                })
+
+                return(
+                  <tr key={"product" + index}>
+                    {// If the prop passed to onEditProductId is not the same as the current products id then render normal data otherwise render input forms using default value to show what it currently is.
+                    onEditProductId !== product._id && (
+                      <Fragment>
+                        <td>{product.brandName}</td>
+                        <td>{product.name}</td>
+                      </Fragment>
                     )}
-                    {// No need for on click event here because button results in a submit event as a result of being wrapped in a form.
-                    onEditProductId === product._id && (
-                      <button>{"Update"}</button>
+                    {onEditProductId === product._id && (
+                      <Fragment>
+                        <td>
+                          <input
+                            type="text"
+                            name="brandName"
+                            defaultValue={product.brandName}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name="name"
+                            defaultValue={product.name}
+                          />
+                        </td>
+                      </Fragment>
                     )}
-                  </td>
-                )}
-                {onDeleteProduct && (
-                  <td>
-                    <button
-                      onClick={() => {
-                        onDeleteProduct({ id: product._id })
-                      }}>
-                      {"Delete"}
-                    </button>
-                  </td>
-                )}
-                {onAddProductToWishlist && (
-                  <td>
-                    <button
-                      onClick={() => {
-                        onAddProductToWishlist({ id: product._id })
-                      }}>
-                      {"Add To Wishlist"}
-                    </button>
-                  </td>
-                )}
-                {onRemoveProductFromWishlist && (
-                  <td>
-                    <button
-                      onClick={() => {
-                        onRemoveProductFromWishlist({ id: product._id })
-                      }}>
-                      {"Remove From Wishlist"}
-                    </button>
-                  </td>
-                )}
-              </tr>
-            ))}
+                    {onUpdateProduct && (
+                      <td>
+                        {onEditProductId !== product._id && (
+                          <button
+                            onClick={event => {
+                              // Prevents default submit action on button click as a result of being wrapped in a form
+                              event.preventDefault()
+                              // Grab the current product id and set it as state in the App.js so we can pass it down as a prop.
+                              getEditProductId({ id: product._id })
+                            }}>
+                            {"Edit"}
+                          </button>
+                        )}
+                        {// No need for on click event here because button results in a submit event as a result of being wrapped in a form.
+                        onEditProductId === product._id && (
+                          <button>{"Update"}</button>
+                        )}
+                      </td>
+                    )}
+                    {onDeleteProduct && (
+                      <td>
+                        <button
+                          onClick={() => {
+                            onDeleteProduct({ id: product._id })
+                          }}>
+                          {"Delete"}
+                        </button>
+                      </td>
+                    )}
+                    {onAddProductToWishlist && !inWishList && (
+                      <td>
+                        <button
+                          onClick={() => {
+                            onAddProductToWishlist({ id: product._id })
+                          }}>
+                          {"Add To Wishlist"}
+                        </button>
+                      </td>
+                    )}
+                    {onRemoveProductFromWishlist && inWishList && (
+                      <td>
+                        <button
+                          onClick={() => {
+                            onRemoveProductFromWishlist({ id: product._id })
+                          }}>
+                          {"Remove From Wishlist"}
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                )
+              })
+            }
           </tbody>
         </table>
       </form>

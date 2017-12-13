@@ -4,8 +4,7 @@ const passportjwt = require("passport-jwt")
 
 const User = require("../models/User")
 
-const jwtSecret =
-  "pYvlhzT5GnLeNKdPUVFFC5dgaVNVEM64W+NtdNaS++dtv9j6FbRpnuzhRFyMfCZb"
+const jwtSecret = process.env.JWT_SECRET
 const jwtAlgorithm = "HS256"
 const jwtExpiresIn = "7 days"
 
