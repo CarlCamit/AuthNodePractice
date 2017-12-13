@@ -23,6 +23,7 @@
   },
   "scripts": {
     "dev": "nodemon server.js",
+    "start": "node server.js",
     "seeds": "node models/seeds.js",
     "drop": "node models/drop.js",
     "reset": "npm run drop && npm run seed",
