@@ -1,0 +1,29 @@
+@base_url = https://api-xgzanwydnf.now.sh
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNhcmxjYW1pdDAxQGdtYWlsLmNvbSIsImlhdCI6MTUxMzIxMTQyOSwiZXhwIjoxNTEzODE2MjI5LCJzdWIiOiI1YTMxYzYyMzNmZDBkNTAwOTkzOGRmZWQifQ.31G53b8vm6qMslZTqZ87qhmZ5vs9kp1uwlDM-IiWEtQ
+
+###
+
+GET {{base_url}}/products
+
+###
+POST {{base_url}}/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "brandName": "Big W",
+    "name": "Shirt"
+}
+
+
+###
+
+POST {{base_url}}/auth/register
+Content-Type: application/json
+
+{
+    "email": "carlcamit01@gmail.com",
+    "firstName": "Carl",
+    "lastName": "Camit",
+    "password": "password123"
+}

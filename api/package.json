@@ -27,6 +27,8 @@
     "seeds": "node models/seeds.js",
     "drop": "node models/drop.js",
     "reset": "npm run drop && npm run seed",
+    "deploy": "now -E production.env",
+    "now:ls": "now ls",
     "prettier": "prettier --no-semi --jsx-bracket-same-line --write \"./**/*.js\""
   }
 }
